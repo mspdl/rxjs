@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,24 +8,19 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'rxjs';
-  observable$!: Observable<any>;
-  subscribe!: Subscription;
+  mySubject$!: Subject<any>;
 
   ngOnInit() {
-    this.observable$ = new Observable((observer) => {
-      observer.next(1);
-      observer.next(2);
-      observer.next(3);
-      observer.complete();
-    });
-
-    this.subscribe = this.observable$.subscribe({
-      next: (value) => console.log(value),
-      error: (error) => {},
-      complete: () => console.log('this is the end'),
-    });
+    this.mySubject$ = new Subject();
+    this.mySubject$.subscribe((x) => console.log('First subscribe', x));
+    this.mySubject$.next(1);
+    this.mySubject$.next(2);
+    this.mySubject$.unsubscribe();
+    this.mySubject$.subscribe((x) => console.log('Second subscribe', x));
+    this.mySubject$.next(3);
   }
+
   ngOnDestroy(): void {
-    this.subscribe.unsubscribe();
+    this.mySubject$.unsubscribe();
   }
 }
