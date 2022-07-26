@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,14 +8,14 @@ import { Observable, Subject, Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'rxjs';
-  mySubject$!: Subject<any>;
+  mySubject$!: BehaviorSubject<any>;
 
   ngOnInit() {
-    this.mySubject$ = new Subject();
+    this.mySubject$ = new BehaviorSubject(200);
     this.mySubject$.subscribe((x) => console.log('First subscribe', x));
     this.mySubject$.next(1);
     this.mySubject$.next(2);
-    this.mySubject$.unsubscribe();
+    // this.mySubject$.unsubscribe();
     this.mySubject$.subscribe((x) => console.log('Second subscribe', x));
     this.mySubject$.next(3);
   }
